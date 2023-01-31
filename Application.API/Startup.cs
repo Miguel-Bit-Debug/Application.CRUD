@@ -19,7 +19,7 @@ namespace Application.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -40,6 +40,12 @@ namespace Application.API
 
             app.UseRouting();
 
+            app.UseCors((x) =>
+            {
+                x.AllowAnyMethod();
+                x.AllowAnyHeader();
+                x.AllowAnyOrigin();
+            });
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
