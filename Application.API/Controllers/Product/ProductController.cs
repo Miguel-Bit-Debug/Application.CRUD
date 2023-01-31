@@ -37,7 +37,8 @@ namespace Application.API.Controllers.Product
         [HttpPost("/")]
         public async Task<IActionResult> AddProduct([FromBody] ProductModel product)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState.Values);
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState.Values);
 
             await _productService.AddProduct(product);
             return Ok(product);
