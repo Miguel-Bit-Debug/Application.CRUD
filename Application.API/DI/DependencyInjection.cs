@@ -1,7 +1,10 @@
 ﻿using Domain.Interfaces;
+using Domain.Interfaces.Customers;
 using Domain.Services;
 using Infra.Data.Data;
 using Infra.Data.Repositories;
+using Infra.Data.Repositories.Customer;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +20,18 @@ namespace Application.API.DI
                 opt.UseSqlServer(configuration["DefaultConnection"]);
             });
 
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((ctx, busConfig) =>
+                {
+                    busConfig.Host(configuration["RabbitMq"]);
+                });
+            });
+
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
         }
     }
 }
